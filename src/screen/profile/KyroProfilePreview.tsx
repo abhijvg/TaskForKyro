@@ -43,16 +43,12 @@ const KyroProfilePreview: React.FC<Props> = (props) => {
           src={require("../../images/placeHolder.png")}
         ></img>
 
-        {
-          //adjustment made since API retuens first_name = " "
-          // To be removed
-          props.name != " " ? (
-            <KyroTypography type="title" text={props.name}></KyroTypography>
-          ) : (
-            <KyroTypography type="title" text="Name"></KyroTypography>
-          )
-        }
-        {props.email != " " ? (
+        {props.name != " " ? (
+          <KyroTypography type="title" text={props.name}></KyroTypography>
+        ) : (
+          <KyroTypography type="title" text="Your Name"></KyroTypography>
+        )}
+        {props.email ? (
           <KyroTypography
             type="text"
             text={props.email}
@@ -61,7 +57,7 @@ const KyroProfilePreview: React.FC<Props> = (props) => {
         ) : (
           <KyroTypography
             type="text"
-            text="email"
+            text="Your mail Id"
             disabled={true}
           ></KyroTypography>
         )}
