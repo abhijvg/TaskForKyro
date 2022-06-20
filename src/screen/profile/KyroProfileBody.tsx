@@ -186,7 +186,7 @@ const KyroProfileBody: React.FC<Props> = (props) => {
     data.email = email;
     data.primary_location = location;
     data.display_name = displayName;
-    data.status = "Invited";
+    data.status = "Complete";
     data.roles = ["Admin", "Engineer"];
     data.organization = "62ab658fcbc5677a0ab14f96";
     homeNumber.type = PhoneNumberType.home;
