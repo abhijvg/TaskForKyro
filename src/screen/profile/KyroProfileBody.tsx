@@ -16,17 +16,16 @@ import Email from "@mui/icons-material/Email";
 import AccountBox from "@mui/icons-material/AccountBox";
 import SaveRoundedIcon from "@mui/icons-material/SaveRounded";
 import CachedRoundedIcon from "@mui/icons-material/CachedRounded";
-import KyroMailInput from "../../components/KyroMailInput";
 import {
   FetchUserResponse,
-  FetchUserRequest,
+  RegisterUserRequest,
   PhoneNumbers,
   PhoneNumberType,
 } from "../../models/KyroApiDataModels";
 import UsersApi from "../../api/users/UsersApi";
-import KyroPhoneNumberInput from "../../components/KyroPhoneNumberInput";
 import KyroAlertDialog from "../../components/dialog/common/KyroAlertDialog";
 import KyroInfoDialog from "../../components/dialog/common/KyroInfoDialog";
+import KyroPhoneNumberInput from "../../components/KyroPhoneNumberInput";
 
 interface Props {
   firstNameHandler: (value: string) => any;
@@ -36,23 +35,16 @@ interface Props {
 }
 
 const KyroProfileBody: React.FC<Props> = (props) => {
-  // constants
-  const first_name = props.userData.first_name;
-  const last_name = props.userData.last_name;
-  const display_name = props.userData.display_name;
-  const emailAddress = props.userData.email;
-  const userLocation = props.userData.primary_location;
-
   // state variables
-  const [firstName, setFirstName] = useState(first_name ? first_name : "");
-  const [lastName, setLastName] = useState(last_name ? last_name : "");
-  const [email, setEmail] = useState(emailAddress ? emailAddress : "");
+  const [firstName, setFirstName] = useState(props.userData.first_name ?? "");
+  const [lastName, setLastName] = useState(props.userData.last_name ?? "");
+  const [email, setEmail] = useState(props.userData.email ?? "");
   const [displayName, setDisplayName] = useState(
-    display_name ? display_name : ""
+    props.userData.display_name ?? ""
   );
   const [personalNumber, setPersonalNumber] = useState("");
   const [officeNumber, setOfficeNumber] = useState("");
-  const [location, setLocation] = useState(userLocation ? userLocation : "");
+  const [location, setLocation] = useState(props.userData.primary_location ?? "");
   const [firstNameHelperText, setFirstNameHelperText] = useState("");
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameHelperText, setLastNameHelperText] = useState("");
@@ -67,7 +59,7 @@ const KyroProfileBody: React.FC<Props> = (props) => {
 
   // AfterEffects to be performed
   useEffect(() => {
-    resetdata();
+    setPhoneData();
   }, [props.userData.phone]);
 
   // Handler methods to support state and props changes
@@ -146,16 +138,20 @@ const KyroProfileBody: React.FC<Props> = (props) => {
 
   const onCancelSaveSuccessDialog = React.useCallback(async () => {
     setOnSaveSuccess(false);
-  }, []);
+  }, [onSaveSuccess]);
 
   // Reset profile data to default
   const resetdata = () => {
-    setLastName(last_name ? last_name : "");
-    setDisplayName(display_name ? display_name : "");
-    setLocation(userLocation ? userLocation : "");
-    onEmailChange(emailAddress ? emailAddress : "");
-    onFirstNameChange(first_name ? first_name : "");
-    props.lastNameHandler(last_name ? last_name : "");
+    setLastName(props.userData.last_name ?? "");
+    setDisplayName(props.userData.display_name ?? "");
+    setLocation(props.userData.primary_location ??"");
+    onEmailChange(props.userData.email ?? "");
+    onFirstNameChange(props.userData.first_name ?? "");
+    props.lastNameHandler(props.userData.last_name ?? "");
+    setPhoneData()
+  };
+
+  const setPhoneData = () => {
     const phone = props.userData.phone;
     if (phone) {
       props.userData.phone?.map((phonedata) => {
@@ -176,12 +172,12 @@ const KyroProfileBody: React.FC<Props> = (props) => {
       setOfficeNumber("");
       setPersonalNumber("");
     }
-  };
+  }
 
   // callback function to save data to DB
   const saveProfileData = useCallback(async () => {
     setIsSaveData(false);
-    const data: FetchUserRequest = {};
+    const data: RegisterUserRequest = {};
     const homeNumber: PhoneNumbers = {};
     const officialNumber: PhoneNumbers = {};
     const phoneData: PhoneNumbers[] = [];
@@ -274,7 +270,7 @@ const KyroProfileBody: React.FC<Props> = (props) => {
               ></KyroTextInput>
             </Grid>
             <Grid item xs={6}>
-              <KyroMailInput
+              <KyroTextInput
                 id={"email"}
                 label={"Email"}
                 error={mailError}
@@ -282,7 +278,7 @@ const KyroProfileBody: React.FC<Props> = (props) => {
                 value={email}
                 displayImage={<Email />}
                 changeAction={onEmailChange}
-              ></KyroMailInput>
+              ></KyroTextInput>
             </Grid>
             <Grid item xs={6}>
               <KyroPhoneNumberInput

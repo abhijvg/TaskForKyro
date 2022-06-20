@@ -1,6 +1,5 @@
-export interface RegisterUserRequest {}
 
-export interface FetchUserRequest {
+export interface RegisterUserRequest {
   email?: string;
   first_name?: string;
   last_name?: string;
@@ -12,7 +11,7 @@ export interface FetchUserRequest {
   organization?: string;
 }
 
-export interface FetchUserResponse extends FetchUserRequest {
+export interface FetchUserResponse extends RegisterUserRequest {
   id: string;
 }
 

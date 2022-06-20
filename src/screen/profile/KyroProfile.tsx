@@ -36,7 +36,7 @@ const KyroProfile: React.FC<Props> = () => {
     }
   }, []);
 
-  const loadUserData = useCallback(
+  const loadUserData = 
     async (userId: string) => {
       UsersApi.fetchEmployeeFromId(userId).then((userResponseData) => {
         setUserData(userResponseData.data);
@@ -47,10 +47,10 @@ const KyroProfile: React.FC<Props> = () => {
         );
         setEmail(userResponseData.data.email);
         setLoading(false);
+      }).catch((err) => {
+        setLoading(false);
       });
-    },
-    [isLoading]
-  );
+    };
 
   const getWishOnTime = () => {
     const today = new Date();

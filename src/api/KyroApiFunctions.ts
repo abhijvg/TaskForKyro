@@ -11,11 +11,10 @@ export class KyroApiFunctions {
       },
     });
     KyroApiFunctions.axios.interceptors.response.use(
-      function (response) {
-        return response;
-      },
-      function (error) {
+       (response) => response,
+       (error) => {
         if (error.response.status === 401) {
+         
         }
         return Promise.reject(error);
       }
@@ -27,13 +26,14 @@ export class KyroApiFunctions {
     data?: any,
     config?: AxiosRequestConfig
   ): AxiosPromise<T> => {
-    return KyroApiFunctions.axios.post<T>(url, data, config);
-  };
+  return KyroApiFunctions.axios.post<T>(url, data, config);
+  }
   public static patch = <T = any>(
     url: string,
     data?: any,
     config?: AxiosRequestConfig
-  ): AxiosPromise<T> => KyroApiFunctions.axios.patch(url, data, config);
+  ): AxiosPromise<T> =>
+  KyroApiFunctions.axios.patch(url, data, config);
   public static get = <T = any>(
     url: string,
     config?: AxiosRequestConfig
@@ -42,9 +42,11 @@ export class KyroApiFunctions {
     url: string,
     data?: any,
     config?: AxiosRequestConfig
-  ): AxiosPromise<T> => KyroApiFunctions.axios.put<T>(url, data, config);
+  ): AxiosPromise<T> =>
+  KyroApiFunctions.axios.put<T>(url, data, config);
   public static delete = (
     url: string,
     config?: AxiosRequestConfig
   ): AxiosPromise => KyroApiFunctions.axios.delete(url, config);
+
 }

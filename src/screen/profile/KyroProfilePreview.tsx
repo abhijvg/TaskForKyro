@@ -42,12 +42,29 @@ const KyroProfilePreview: React.FC<Props> = (props) => {
           style={{ height: 200, width: 200, borderRadius: "50%", padding: 30 }}
           src={require("../../images/placeHolder.png")}
         ></img>
-        <KyroTypography type="title" text={props.name}></KyroTypography>
-        <KyroTypography
-          type="text"
-          text={props.email}
-          disabled={true}
-        ></KyroTypography>
+
+        {
+          //adjustment made since API retuens first_name = " "
+          // To be removed
+          props.name != " " ? (
+            <KyroTypography type="title" text={props.name}></KyroTypography>
+          ) : (
+            <KyroTypography type="title" text="Name"></KyroTypography>
+          )
+        }
+        {props.email != " " ? (
+          <KyroTypography
+            type="text"
+            text={props.email}
+            disabled={true}
+          ></KyroTypography>
+        ) : (
+          <KyroTypography
+            type="text"
+            text="email"
+            disabled={true}
+          ></KyroTypography>
+        )}
       </Box>
     </div>
   );
